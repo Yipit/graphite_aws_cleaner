@@ -38,4 +38,4 @@ def main():
     logger.addHandler(ch)
 
     hostnames = get_running_instances_hostnames(name_pattern)
-    remove_hosts_from_graphite(graphite_dir, name_pattern, hostnames)
+    remove_hosts_from_graphite(storage_dir, name_pattern, hostnames)

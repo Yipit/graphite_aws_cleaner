@@ -43,7 +43,7 @@ if __name__ == '__main__':
         description=(
             "Delete old graphite data based on instance name pattern"
             "and current running AWS instances."),
-        long_description=local_file('README.md'),
+        long_description=local_file('README.rst'),
         author='Yipit Coders',
         author_email='coders@yipit.com',
         url='https://github.com/Yipit/graphite_aws_cleaner',

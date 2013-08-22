@@ -13,7 +13,6 @@ Options:
 """
 
 import logging
-import sys
 
 from docopt import docopt
 

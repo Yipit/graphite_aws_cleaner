@@ -27,6 +27,18 @@ This is going to delete all graphite data related to `web_i-789`,
 since the instance is no longer runnning.
 
 
+### Patterns
+
+Anything that matches Python's [`fnmatch.fnmatch`](http://docs.python.org/2/library/fnmatch.html) works as a pattern:
+
+| Character |  Meaning                          |
+| --------- | --------------------------------- |
+| *         |  matches everything               |
+| ?         |  matches any single character     |
+| [seq]     |  matches any character in seq     |
+| [!seq]    |  matches any character not in seq |
+
+
 ## Development
 
     $ pip install -r development.txt

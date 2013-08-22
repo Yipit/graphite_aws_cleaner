@@ -21,7 +21,7 @@ It is required to have AWS credentials set via environment variables (`AWS_ACCES
     web_i-789 # terminated
 
 
-    $ graphite-aws-cleaner '*web*' /graphite/storage
+    $ graphite-aws-cleaner '*web*' /opt/graphite/storage
 
 This is going to delete all graphite data related to `web_i-789`,
 since the instance is no longer runnning.

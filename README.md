@@ -41,9 +41,9 @@ Anything that matches Python's [`fnmatch.fnmatch`](http://docs.python.org/2/libr
 
 ## Development
 
-    $ pip install -r development.txt
+    $ make setup
 
 
 ### Running tests
 
-    $ py.test -v
+    $ make test

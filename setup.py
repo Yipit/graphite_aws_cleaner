@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     setup(
         name="graphite_aws_cleaner",
-        version='0.0.1',
+        version='0.0.1', # change __version__ also
         description=(
             "Delete old graphite data based on instance name pattern"
             "and current running AWS instances."),

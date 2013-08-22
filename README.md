@@ -5,7 +5,7 @@ Delete old graphite data based on instance name pattern and current running AWS 
 This is very useful if you have AWS instances that are terminated and you no
 longer need their metrics, so you can just remove their stats.
 
-It is required to have AWS credentials set via environment variables or IAM roles.
+It is required to have AWS credentials set via environment variables (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`) or IAM roles.
 
 
 ## Installation

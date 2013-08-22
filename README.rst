@@ -41,7 +41,7 @@ Anything that matches Python's
 works as a pattern:
 
 +-------------+------------------------------------+
-| Character   | Meaning                            |
+| Pattern     | Meaning                            |
 +=============+====================================+
 | \*          | matches everything                 |
 +-------------+------------------------------------+

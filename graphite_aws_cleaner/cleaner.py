@@ -5,16 +5,20 @@ import os
 import shutil
 
 
-__all__ = ['remove_hosts_from_graphite', 'get_running_instances_hostnames']
+__all__ = [
+    'remove_hosts_from_graphite',
+    'get_running_instances_hostnames',
+    'noop_remove',
+]
 
 
 logger = logging.getLogger('graphite_cleaner')
 
 
-def remove_hosts_from_graphite(root_dir, match, keep):
+def remove_hosts_from_graphite(root_dir, match, keep, remove_function=shutil.rmtree):
     all_matched_directories = _find_all_directories(root_dir, match)
     for directory in all_matched_directories:
-        _check(directory, keep)
+        _check(directory, keep, remove_function)
 
 
 def get_running_instances_hostnames(name_pattern):
@@ -30,12 +34,15 @@ def _find_all_directories(root_dir, match):
                 yield os.path.join(root, directory)
 
 
-def _check(directory, keep):
+def _check(directory, keep, remove_function):
     hosts_matching_directory = (h for h in keep if directory.endswith('-' + h))
     if not any(hosts_matching_directory):
         logger.info("Removing old graphite directory: {}".format(directory))
-        shutil.rmtree(directory)
+        remove_function(directory)
 
+def noop_remove(directory):
+    # does nothing, just useful for dry-run and debugging
+    return
 
 def _get_instance_hostname(instance):
     return instance.id.replace('i-', '')

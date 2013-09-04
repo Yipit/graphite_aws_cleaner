@@ -6,6 +6,7 @@ from mock import patch, call
 from graphite_aws_cleaner import (
     remove_hosts_from_graphite,
     get_running_instances_hostnames,
+    noop_remove,
 )
 from moto import mock_ec2
 from moto.ec2 import ec2_backend
@@ -59,6 +60,31 @@ def test_remove_hosts_from_graphite_should_log_dirs_removed(logger):
     ]
 
     logger.info.assert_has_calls(expected_calls)
+
+
+@patch('graphite_aws_cleaner.cleaner.logger')
+def test_should_be_possible_to_specify_remove_function(logger):
+    reset_tmpdir()
+    current_hosts = ['server-1']
+    old_hosts = ['server-2']
+    create_stats('server', instance_id='1')
+
+    expected_deleted_paths = [
+        create_stats('server', instance_id='2'),
+    ]
+
+    remove_hosts_from_graphite(
+        '{tmpdir}/graphite/storage'.format(tmpdir=tmpdir),
+        match='*server*',
+        keep=['1'],
+        remove_function=noop_remove)
+
+    expected_logger_calls = [
+        call.info('Removing old graphite directory: {}'.format(expected_deleted_paths[0]))
+    ]
+
+    logger.info.assert_has_calls(expected_logger_calls)
+    assert list_hosts_with_stored_data() == 'server-1 server-2'.split()
 
 
 @mock_ec2

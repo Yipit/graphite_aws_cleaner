@@ -49,7 +49,11 @@ def _get_instance_hostname(instance):
 
 
 def _match_instance_name(instance, name_pattern):
-    name = instance.tags['Name']
+    try:
+        name = instance.tags['Name']
+    except KeyError:
+        logger.warning("Instance {} has no tag Name set".format(instance.id))
+        return False
     return fnmatch.fnmatch(name, name_pattern)
 
 

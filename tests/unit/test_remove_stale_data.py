@@ -103,6 +103,27 @@ def test_find_running_aws_machines_by_pattern():
     assert instances == [hostname_id3]
 
 
+@mock_ec2
+def test_should_ignore_instances_with_no_name_set():
+    id1 = create_instance('web_i1', add_name=False)
+    instances = get_running_instances_hostnames('*web*')
+
+    assert instances == []
+
+
+@mock_ec2
+@patch('graphite_aws_cleaner.cleaner.logger')
+def test_should_log_as_warning_instances_with_no_name_set(logger):
+    id1 = create_instance('web_i1', add_name=False)
+
+    expected_calls = [
+        call.warning('Instance {} has no tag Name set'.format(id1)),
+    ]
+
+    instances = get_running_instances_hostnames('*web*')
+    logger.warning.assert_has_calls(expected_calls)
+
+
 def create_file(path, fname):
     with open(os.path.join(path, fname), "w") as f:
         f.write("TEST FILE")
@@ -129,11 +150,13 @@ def list_hosts_with_stored_data():
     return os.listdir(whisper_path)
 
 
-def create_instance(instance_name):
+def create_instance(instance_name, add_name=True):
     ec2_conn = boto.connect_ec2()
     reservation = ec2_conn.run_instances('ami-1234abcd')
     instance = reservation.instances[0]
-    instance.add_tag("Name", instance_name)
+
+    if add_name:
+        instance.add_tag("Name", instance_name)
 
     # hacky solution for changing instance state name via moto
     ec2_backend.get_instance(instance.id)._state.name = "running"
